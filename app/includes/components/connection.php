@@ -1,6 +1,11 @@
 <?php 
-$conn = mysqli_connect("localhost","root","","bnb_db");
+$dbhost = "localhost";
+$dbuser = "root";
+$dbpass = "";
+$dbname = "bnb_db";
+
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+
 if(!$conn){
-    die("Connection Error!" . mysqli_error());
+    die("Connection Error!" . mysqli_error($conn));
 }
-?>
