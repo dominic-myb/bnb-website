@@ -5,7 +5,7 @@
 <html>
 <?php
     $pageTitle = "Login";
-    $style = "assets/css/login-style.css";
+    $style = "assets/css/form.css";
     include("app/includes/html/html_head.php");
 ?>
 <body>

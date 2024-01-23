@@ -5,7 +5,7 @@
 <html lang="en">
 <?php
     $pageTitle = "";
-    $style = "assets/css/style.css";
+    $style = "assets/css/main.css";
     include("app/includes/html/html_head.php");
 ?>
 <body>
