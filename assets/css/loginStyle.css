@@ -1,0 +1,73 @@
+body {
+      background-color: #f9f1e9;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 300px;
+      margin: 0 auto;
+      margin-top: 120px;
+      padding: 20px;
+      background-color: #ffffff;
+      border: 1px solid #e6c9a9;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .container h2 {
+      text-align: center;
+      color: #603000;
+      margin-bottom: 20px;
+    }
+
+    .container label, .container input[type="text"], .container input[type="password"] {
+      display: block;
+      width: 93%;
+      margin-bottom: 10px;
+      color: #603000;
+    }
+
+    .container input[type="text"], .container input[type="password"] {
+      padding: 10px;
+      border: 1px solid #e6c9a9;
+      border-radius: 4px;
+    }
+
+    .container input[type="submit"] {
+      width: 100%;
+      background-color: #603000;
+      color: #ffffff;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .container input[type="submit"]:hover {
+      background-color: #472800;
+    }
+    .brand{
+      color: whitesmoke;
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    .brand span {
+     color: orange;
+    }
+    .create-acc
+    {
+      color: white;
+      text-decoration: none;
+      font-family: Arial, sans-serif;
+      text-decoration: none;
+    }
+    button
+    {
+      background-color: #472800;
+      margin-top: 10px;
+      margin-left: 28%;
+      border-radius: 4px;
+    }
+    hr
+    {
+      color: slategray;
+    }
