@@ -1,5 +1,52 @@
 <?php
+session_start();
 include("includes/connection.php");
+
+if (isset($_POST['add_to_cart'])) {
+    $product_id = $_POST['product_id'];
+    $product_name = $_POST['product_name'];
+    $product_price = $_POST['product_price'];
+    $product_image = $_POST['product_image'];
+    $product_quantity = 1;
+
+    // Use prepared statements to prevent SQL injection
+    $select_cart = mysqli_prepare($con, "SELECT * FROM `order_tbl` WHERE name = ?");
+    mysqli_stmt_bind_param($select_cart, "s", $product_name);
+    mysqli_stmt_execute($select_cart);
+    mysqli_stmt_store_result($select_cart);
+
+    if (mysqli_stmt_num_rows($select_cart) > 0) {
+        $update_value = 1;
+        $order_query = "SELECT * FROM order_tbl";
+        $order_result = mysqli_query($con, $order_query);
+        if (mysqli_num_rows($order_result) > 0) {
+            while ($row = mysqli_fetch_assoc($order_result)) {
+                if($product_id == $row['product_id']){
+                    $order_id = $row['order_id'];
+                    break;
+                }
+            }
+        }
+        $update_quantity_query = mysqli_prepare($con, "UPDATE order_tbl SET quantity = quantity + ? WHERE order_id = ?");
+        mysqli_stmt_bind_param($update_quantity_query, "ii", $update_value, $order_id);
+        mysqli_stmt_execute($update_quantity_query);
+        echo"<script>
+        alert('Added 1 to the cart!');
+        window.location = index.php;
+        </script>";
+    } else {
+        // Use prepared statements to prevent SQL injection
+        $insert_product = mysqli_prepare($con, "INSERT INTO `order_tbl` (product_id, name, price, image, quantity) VALUES (?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($insert_product, "issii", $product_id, $product_name, $product_price, $product_image, $product_quantity);
+        mysqli_stmt_execute($insert_product);
+        echo"<script>
+        alert('Added 1 to the cart!');
+        window.location = index.php;
+        </script>";
+    }
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,46 +60,33 @@ include("includes/connection.php");
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <style>
-.add-to-cart-btn
-{
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #ff6600;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-.add-to-cart-btn:hover {
-    background-color: #ff6681;
-  }
-  
-  /* Example with icon */
-.add-to-cart-btn.icon {
-    position: relative;
-    padding-left: 40px;
-  }
-  
-.add-to-cart-btn.icon:before {
-    content: "\f07a"; /* Replace with your desired icon code */
-    font-family: FontAwesome; /* Assuming you're using Font Awesome */
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+    <style>
+        .add-to-cart-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff6600;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
 
-        </style>
+        .add-to-cart-btn:hover {
+            opacity: 0.8;
+        }
+
+        .add-to-cart-btn:active {
+            opacity: 0.5;
+        }
+    </style>
     <title>Café BLK & BRWN</title>
 </head>
 
 <body>
-
     <header>
         <div class="logo">
             <a href="#">Café <span>BLK & BRWN</span></a>
@@ -80,6 +114,7 @@ include("includes/connection.php");
             <h3>Menu</h3>
             <h4>Black & Brown Coffee Menu</h4>
         </div>
+
         <div class="menu-content">
             <div class="hot-coffees">
                 <div class="hot-coffees-image">
@@ -113,74 +148,65 @@ include("includes/connection.php");
 
 
     <div class="shop" id="shop">
+
         <div class="shop-header">
             <h3>Shop</h3>
             <h4>Black & Brown Coffee Drinks</h4>
         </div>
+
         <div class="shop-box">
-                    
-        <?php
-$sql = "SELECT * FROM product_tbl";
-$result = mysqli_query($con, $sql);
-$inc = null;
+            <?php
+            $sql = "SELECT * FROM product_tbl";
+            $result = $con->query($sql);
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    ?>
+                    <form action="index.php" method="post">
+                        <div class="item">
+                            <div class="card">
+                                <div class="card-image">
+                                    <input type="hidden" name="product_id" id="product_id"
+                                        value="<?php echo $row['product_id']; ?>">
+                                    <input type="hidden" name="product_image" value="<?php echo $row['product_image']; ?>">
+                                    <img src="<?php echo $row['product_image']; ?>" alt="">
+                                </div>
+                                <div class="card-body">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star-half"></i>
 
-while ($row = mysqli_fetch_assoc($result)) {
-    $inc = $row['product_id'];
-    $product_name = $row['product_name'];
-    $product_price = $row['product_price'];
-    $product_desc = $row['product_desc'];
-    $product_image = $row['product_image'];
+                                    <input type="hidden" name="product_price" value="<?php echo $row['product_price']; ?>">
+                                    <label class="cash">₱
+                                        <?php echo $row['product_price']; ?>
+                                    </label>
 
-    echo '
-    <form action="index.php" method="post">
-        <div class="item-1">
-            <div class="card">
-                <div class="card-image">
-                    <input type="hidden" name="product_image" value="'.$product_image.'">
-                    <img src="'.$product_image.'" alt="Button Image">
-                </div>
-                <div class="card-body">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star-half"></i>
-                    <input type="hidden" name="product_price" value="'.$product_price.'">
-                    <label class="cash">₱'.$product_price.'</label>
-                    <h3><input type="hidden" name="product_name" value="'.$product_name.'">'.$product_name.'</h3>
-                    <label>'.$product_desc.'</label>
-                    <br>
-                    <br>
-                    <center>
-                        <input type="submit" class="add-to-cart-btn" value="Add to cart" name="add_to_cart">
-                    </center>
-                </div>
-            </div>
+                                    <h3>
+                                        <input type="hidden" name="product_name" value="<?php echo $row['product_name']; ?>">
+                                        <?php echo $row['product_name']; ?>
+                                    </h3>
+
+                                    <label>
+                                        <?php echo $row['product_desc']; ?>
+                                    </label>
+                                    <br>
+                                    <br>
+                                    <center>
+                                        <button type="submit" class="add-to-cart-btn" name="add_to_cart">
+                                            Add to cart
+                                        </button>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <?php
+                }
+            }
+            ?>
         </div>
-    </form>
-    ';
-}
-
-if (isset($_POST['add_to_cart'])) {
-    $product_name = $_POST['product_name'];
-    $product_price = $_POST['product_price'];
-    $product_image = $_POST['product_image'];
-    $order_qty = 1;
-
-    $select_cart = mysqli_query($con, "SELECT * FROM order_tbl WHERE product_name = '$product_name'");
-
-    if (mysqli_num_rows($select_cart) > 0) {
-        $message[] = 'Product already added to cart';
-    } else {
-        $insert_product = mysqli_query($con, "INSERT INTO order_tbl(product_name, product_price, product_image, order_qty) VALUES ('$product_name', '$product_price', '$product_image', '$order_qty')");
-        $message[] = 'Product added to cart successfully';
-    }
-} else {
-    echo '<script>Error!</script>';
-}
-?>                  
-            </div>
-        </div>
+    </div>
 
     <div class="contact" id="contact">
         <div class="contact-box">
