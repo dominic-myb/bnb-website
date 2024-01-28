@@ -9,37 +9,39 @@ if (isset($_POST['add_to_cart'])) {
     $product_image = $_POST['product_image'];
     $product_quantity = 1;
 
-    // Use prepared statements to prevent SQL injection
     $select_cart = mysqli_prepare($con, "SELECT * FROM `order_tbl` WHERE name = ?");
     mysqli_stmt_bind_param($select_cart, "s", $product_name);
     mysqli_stmt_execute($select_cart);
     mysqli_stmt_store_result($select_cart);
 
     if (mysqli_stmt_num_rows($select_cart) > 0) {
+
         $update_value = 1;
         $order_query = "SELECT * FROM order_tbl";
         $order_result = mysqli_query($con, $order_query);
         if (mysqli_num_rows($order_result) > 0) {
             while ($row = mysqli_fetch_assoc($order_result)) {
-                if($product_id == $row['product_id']){
+                if ($product_id == $row['product_id']) {
                     $order_id = $row['order_id'];
                     break;
                 }
             }
         }
+
         $update_quantity_query = mysqli_prepare($con, "UPDATE order_tbl SET quantity = quantity + ? WHERE order_id = ?");
         mysqli_stmt_bind_param($update_quantity_query, "ii", $update_value, $order_id);
         mysqli_stmt_execute($update_quantity_query);
-        echo"<script>
+        echo "<script>
         alert('Added 1 to the cart!');
         window.location = index.php;
         </script>";
+
     } else {
-        // Use prepared statements to prevent SQL injection
+
         $insert_product = mysqli_prepare($con, "INSERT INTO `order_tbl` (product_id, name, price, image, quantity) VALUES (?, ?, ?, ?, ?)");
         mysqli_stmt_bind_param($insert_product, "issii", $product_id, $product_name, $product_price, $product_image, $product_quantity);
         mysqli_stmt_execute($insert_product);
-        echo"<script>
+        echo "<script>
         alert('Added 1 to the cart!');
         window.location = index.php;
         </script>";
@@ -61,6 +63,10 @@ if (isset($_POST['add_to_cart'])) {
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        body {
+            overflow-x: hidden;
+        }
+
         .add-to-cart-btn {
             display: inline-block;
             padding: 10px 20px;
@@ -82,6 +88,55 @@ if (isset($_POST['add_to_cart'])) {
         .add-to-cart-btn:active {
             opacity: 0.5;
         }
+
+        /* Style the dropdown anchor */
+        .account-btn {
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            /* Remove default underline */
+            display: inline-block;
+            /* Ensure the anchor behaves like a block element */
+            cursor: pointer;
+        }
+
+        /* Style the dropdown content (hidden by default) */
+        .account-drp-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 10px;
+            text-align: center;
+            transition: display 0.15s;
+        }
+
+        /* Style the links inside the dropdown */
+        .account-drp-content a {
+            color: black;
+            padding: 10px 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            transition: background-color 0.15s;
+        }
+
+        /* Change color on hover */
+        .account-drp-content a:hover {
+            background-color: #d3d3d3;
+        }
+
+        .account-drp {
+            transition: display 0.15s;
+        }
+
+        /* Show the dropdown on hover */
+        .account-drp:hover .account-drp-content {
+            display: block;
+        }
     </style>
     <title>Café BLK & BRWN</title>
 </head>
@@ -94,12 +149,44 @@ if (isset($_POST['add_to_cart'])) {
 
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#menu">Menu</a></li>
-                <li><a href="#shop">Shop</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="cart.php">My Cart</a></li>
-                <li><a href="logout.php">Logout</a></li>
+                <li>
+                    <div class="account-drp">
+                        <a href="#menu" class="account-btn">Menu</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="account-drp">
+                        <a href="#shop" class="account-btn">Shop</a>
+                    </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="account-drp">
+                        <a href="#contact" class="account-btn">Contact</a>
+                    </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="account-drp">
+                        <a href="#" class="account-btn">Cart</a>
+                        <div class="account-drp-content">
+                            <a href="#">Option 1</a>
+                            <a href="#">Option 2</a>
+                            <a href="#">Option 3</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="account-drp">
+                        <a href="#" class="account-btn">Account</a>
+                        <div class="account-drp-content">
+                            <a href="#">Option 1</a>
+                            <a href="#">Option 2</a>
+                            <hr>
+                            <a href="logout.php" style="color:red;">Logout</a>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </nav>
     </header>
@@ -244,7 +331,7 @@ if (isset($_POST['add_to_cart'])) {
                 <a href="#"><i class="fa-brands fa-youtube"></i></a>
             </div>
             <div class="copyright">
-                <label>Copyright &copy; 2023</label>
+                <label>Copyright &copy; 2024</label>
             </div>
             <div class="brand">
                 <label>Café <span>BLK & BRWN</span></label>
