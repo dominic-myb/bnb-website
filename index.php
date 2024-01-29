@@ -1,24 +1,39 @@
 <?php
 session_start();
-include("includes/connection.php");
+include("app/includes/components/connection.php");
+
+$customer_id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : null;
 
 if (isset($_POST['add_to_cart'])) {
+
+    if (!$customer_id) {
+        echo "<script>
+            alert('Please log in to add items to the cart.');
+            window.location = 'login.php'; // Change 'login.php' to your login page
+            </script>";
+        exit();
+    }
+    
     $product_id = $_POST['product_id'];
     $product_name = $_POST['product_name'];
     $product_price = $_POST['product_price'];
     $product_image = $_POST['product_image'];
     $product_quantity = 1;
 
-    $select_cart = mysqli_prepare($con, "SELECT * FROM `order_tbl` WHERE name = ?");
-    mysqli_stmt_bind_param($select_cart, "s", $product_name);
+    // Assuming customer_id is stored in the session
+    $customer_id = $_SESSION['customer_id'];
+
+    $select_cart = mysqli_prepare($con, "SELECT * FROM `order_tbl` WHERE customer_id = ? AND name = ?");
+    mysqli_stmt_bind_param($select_cart, "is", $customer_id, $product_name);
     mysqli_stmt_execute($select_cart);
     mysqli_stmt_store_result($select_cart);
 
     if (mysqli_stmt_num_rows($select_cart) > 0) {
 
         $update_value = 1;
-        $order_query = "SELECT * FROM order_tbl";
+        $order_query = "SELECT * FROM order_tbl WHERE customer_id = $customer_id";
         $order_result = mysqli_query($con, $order_query);
+        
         if (mysqli_num_rows($order_result) > 0) {
             while ($row = mysqli_fetch_assoc($order_result)) {
                 if ($product_id == $row['product_id']) {
@@ -33,112 +48,29 @@ if (isset($_POST['add_to_cart'])) {
         mysqli_stmt_execute($update_quantity_query);
         echo "<script>
         alert('Added 1 to the cart!');
-        window.location = index.php;
+        window.location = 'index.php';
         </script>";
 
     } else {
 
-        $insert_product = mysqli_prepare($con, "INSERT INTO `order_tbl` (product_id, name, price, image, quantity) VALUES (?, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($insert_product, "issii", $product_id, $product_name, $product_price, $product_image, $product_quantity);
+        $insert_product = mysqli_prepare($con, "INSERT INTO `order_tbl` (customer_id, product_id, name, price, image, quantity) VALUES (?, ?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($insert_product, "iissii", $customer_id, $product_id, $product_name, $product_price, $product_image, $product_quantity);
         mysqli_stmt_execute($insert_product);
         echo "<script>
         alert('Added 1 to the cart!');
-        window.location = index.php;
+        window.location = 'index.php';
         </script>";
     }
 }
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="img/tab-icon.png">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        body {
-            overflow-x: hidden;
-        }
-
-        .add-to-cart-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #ff6600;
-            color: #fff;
-            font-size: 16px;
-            font-weight: bold;
-            text-decoration: none;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-
-        .add-to-cart-btn:hover {
-            opacity: 0.8;
-        }
-
-        .add-to-cart-btn:active {
-            opacity: 0.5;
-        }
-
-        /* Style the dropdown anchor */
-        .account-btn {
-            color: white;
-            padding: 10px;
-            font-size: 16px;
-            text-decoration: none;
-            /* Remove default underline */
-            display: inline-block;
-            /* Ensure the anchor behaves like a block element */
-            cursor: pointer;
-        }
-
-        /* Style the dropdown content (hidden by default) */
-        .account-drp-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 120px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            border-radius: 10px;
-            text-align: center;
-            transition: display 0.15s;
-        }
-
-        /* Style the links inside the dropdown */
-        .account-drp-content a {
-            color: black;
-            padding: 10px 10px;
-            text-decoration: none;
-            display: block;
-            font-size: 14px;
-            transition: background-color 0.15s;
-        }
-
-        /* Change color on hover */
-        .account-drp-content a:hover {
-            background-color: #d3d3d3;
-        }
-
-        .account-drp {
-            transition: display 0.15s;
-        }
-
-        /* Show the dropdown on hover */
-        .account-drp:hover .account-drp-content {
-            display: block;
-        }
-    </style>
-    <title>Café BLK & BRWN</title>
+<?php 
+$title = "Café BLK & BRWN"; 
+include("app/includes/html/index.head.php"); 
+?>
 </head>
 
 <body>
@@ -183,7 +115,7 @@ if (isset($_POST['add_to_cart'])) {
                             <a href="#">Option 1</a>
                             <a href="#">Option 2</a>
                             <hr>
-                            <a href="logout.php" style="color:red;">Logout</a>
+                            <a href="app/process/logout.php" style="color:red;">Logout</a>
                         </div>
                     </div>
                 </li>
@@ -342,7 +274,3 @@ if (isset($_POST['add_to_cart'])) {
 </body>
 
 </html>
-<?php
-
-
-?>
