@@ -1,135 +1,138 @@
-@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,500,600,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Work+Sans:400,500,600,700&display=swap");
 * {
-    margin: 0;
-    padding: 0;
-    font-family: 'Work Sans', sans-serif;
-    font-size: 18px;
+  margin: 0;
+  padding: 0;
+  font-family: "Work Sans", sans-serif;
+  font-size: 18px;
 }
 
-.user-cart span{
-    background-color:red; 
-    padding-right:3px; 
-    padding-left:3px;  
-    border-radius:10px; 
-    font-size:18px;
-    margin-left:-1.2rem;
+.user-cart span {
+  background-color: red;
+  padding-right: 3px;
+  padding-left: 3px;
+  border-radius: 10px;
+  font-size: 18px;
+  margin-left: -1.2rem;
 }
 
 /*********** admin dashboard styling **********/
-  .card{
-      background-color: #3B3131;
-      padding:20px;
-      margin: 10px;
-      border-radius: 10px;
-      box-shadow: 8px 5px 5px #3B3131;
-  }
+.card {
+  background-color: #3b3131;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 8px 5px 5px #3b3131;
+}
 
 /************************** for sidebar ***********************************/
 
-  /* The sidebar menu */
-  .sidebar {
-      height: 100%; /* 100% Full-height */
-      width: 0; /* 0 width - change this with JavaScript */
-      position: fixed; /* Stay in place */
-      z-index: 1; /* Stay on top */
-      top: 0;
-      left: 0;
-      background-color: #3B3131; /* Black*/
-      overflow-x: hidden; /* Disable horizontal scroll */
-      padding-top: 60px; /* Place content 60px from the top */
-      transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
-    }
-    
-    /* The sidebar links */
-    .sidebar a {
-      padding: 8px 8px 8px 32px;
-      text-decoration: none;
-      font-size: 22px;
-      color: #fff;
-      display: block;
-      transition: 0.3s;
-    }
-    
-    .sidebar .side-header{
-          margin-left: 30px;
-          margin-bottom: 8px;
-          color: #fff;
-      }
+/* The sidebar menu */
+.sidebar {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0;
+  left: 0;
+  background-color: #3b3131; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+}
 
-    /* When you mouse over the navigation links, change their color */
-    .sidebar a:hover {
-      background-color: #584e46;
-    }
-    
-    /* Position and style the close button (top right corner) */
-    .sidebar .closebtn {
-      position: absolute;
-      top: 0;
-      right: 2px;
-      font-size: 34px;
-      margin-left: 50px;
-    }
-    
-    /* The button used to open the sidebar */
-    .openbtn {
-      font-size: 20px;
-      cursor: pointer;
-      padding: 10px 15px;
-      border: none;
-      color: #fff;
-      background-color:#584e46;
-    }
-    
-    .openbtn:hover {
-      color: #ECDAC9;
-    }
-    
-    /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-    #main {
-      transition: margin-left .5s; /* If you want a transition effect */
-      padding: 20px;
-    }
-    
-    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-    @media screen and (max-height: 450px) {
-      .sidebar {padding-top: 15px;}
-      .sidebar a {font-size: 18px;}
-    }
+/* The sidebar links */
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 22px;
+  color: #fff;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar .side-header {
+  margin-left: 30px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidebar a:hover {
+  background-color: #584e46;
+}
+
+/* Position and style the close button (top right corner) */
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 2px;
+  font-size: 34px;
+  margin-left: 50px;
+}
+
+/* The button used to open the sidebar */
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px 15px;
+  border: none;
+  color: #fff;
+  background-color: #584e46;
+}
+
+.openbtn:hover {
+  color: #ecdac9;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left 0.5s; /* If you want a transition effect */
+  padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidebar {
+    padding-top: 15px;
+  }
+  .sidebar a {
+    font-size: 18px;
+  }
+}
 
 /************************** product table styling *********************************/
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0;
-    box-shadow: 0 2px 15px rgba(64, 64, 64, .7);
-    border-radius: 12px 12px 0 0;
-    margin-bottom: 50px;
-  }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  box-shadow: 0 2px 15px rgba(64, 64, 64, 0.7);
+  border-radius: 12px 12px 0 0;
+  margin-bottom: 50px;
+}
 
-  td,
-  th {
-    padding: 10px 16px;
-    text-align: center;
-  }
+td,
+th {
+  padding: 10px 16px;
+  text-align: center;
+}
 
-  th {
-    background-color: #584e46;
-    color: #fafafa;
-    font-family: 'Open Sans', Sans-serif;
-    font-weight: bold;
-  }
+th {
+  background-color: #584e46;
+  color: #fafafa;
+  font-family: "Open Sans", Sans-serif;
+  font-weight: bold;
+}
 
-  tr {
-    width: 100%;
-    background-color: #fafafa;
-    font-family: 'Montserrat', sans-serif;
-  }
+tr {
+  width: 100%;
+  background-color: #fafafa;
+  font-family: "Montserrat", sans-serif;
+}
 
-  tr:nth-child(even) {
-    background-color: #eeeeee;
-  }
-
+tr:nth-child(even) {
+  background-color: #eeeeee;
+}
 
 /************************ login and sign up styling  ******************************/
 
@@ -150,8 +153,8 @@
 /*
 * Card component
 */
-.card-account{
-  background-color: #ECDAC9;
+.card-account {
+  background-color: #ecdac9;
   /* just in case there no content*/
   padding: 20px 25px 30px;
   margin: 0 auto 25px;
@@ -208,9 +211,9 @@
   font-size: 16px;
 }
 
-.form-signin input[type=email],
-.form-signin input[type=password],
-.form-signin input[type=text],
+.form-signin input[type="email"],
+.form-signin input[type="password"],
+.form-signin input[type="text"],
 .form-signin button {
   width: 100%;
   display: block;
@@ -225,12 +228,11 @@
 .form-signin .form-control:focus {
   border-color: #ab9787;
   outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px #8a7a6d;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px #8a7a6d;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #8a7a6d;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #8a7a6d;
 }
 
 .btn.btn-signin {
-  
   background-color: #584e46;
   padding: 2px;
   font-weight: 700;
@@ -252,7 +254,6 @@
   background-color: #a56a39;
 }
 
-
 .box {
   position: relative;
   background-color: #000;
@@ -263,13 +264,13 @@
   display: block;
   max-width: 100%;
   height: auto;
-  transition: .5s ease;
+  transition: 0.5s ease;
   backface-visibility: hidden;
   object-fit: contain;
 }
 
 .middle {
-  transition: .5s ease;
+  transition: 0.5s ease;
   opacity: 0;
   position: absolute;
   top: 50%;
@@ -296,26 +297,25 @@
 }
 
 /* *******************   cart to login icon styling   ********************* */
-.cart-login-btn{
-  margin:5px;
+.cart-login-btn {
+  margin: 5px;
   border-style: outset;
 }
-.cart-login-btn a i{
+.cart-login-btn a i {
   padding: 10px;
-  font-size:30px; 
-  color:#584e46;              
+  font-size: 30px;
+  color: #584e46;
 }
-.cart-login-btn a i:hover{  
+.cart-login-btn a i:hover {
   color: grey;
 }
 
-
 /* ****************************   footer  *************************** */
-.footer-hover{
+.footer-hover {
   color: #000;
 }
 
-.footer-hover:hover{
-  color: #ECDAC9;
+.footer-hover:hover {
+  color: #ecdac9;
   text-decoration: none;
 }
