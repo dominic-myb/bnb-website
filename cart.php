@@ -1,12 +1,11 @@
 <?php
 session_start();
-include("includes/connection.php");
+include("app/includes/components/connection.php");
 
 if (isset($_POST['update_update_btn'])) {
    $update_value = $_POST['update_quantity'];
    $update_id = $_POST['update_quantity_id'];
 
-   // Use prepared statement to prevent SQL injection
    $update_quantity_query = mysqli_prepare($con, "UPDATE order_tbl SET quantity = ? WHERE order_id = ?");
    mysqli_stmt_bind_param($update_quantity_query, "ii", $update_value, $update_id);
    mysqli_stmt_execute($update_quantity_query);
@@ -20,7 +19,6 @@ if (isset($_POST['update_update_btn'])) {
 if (isset($_GET['remove'])) {
    $remove_id = mysqli_real_escape_string($con, $_GET['remove']);
 
-   // Use prepared statement to prevent SQL injection
    $remove_query = mysqli_prepare($con, "DELETE FROM order_tbl WHERE order_id = ?");
    mysqli_stmt_bind_param($remove_query, "i", $remove_id);
    mysqli_stmt_execute($remove_query);
@@ -30,7 +28,7 @@ if (isset($_GET['remove'])) {
 }
 
 if (isset($_GET['delete_all'])) {
-   // Use prepared statement to prevent SQL injection
+
    $delete_all_query = mysqli_prepare($con, "DELETE FROM order_tbl");
    mysqli_stmt_execute($delete_all_query);
 
@@ -48,15 +46,14 @@ if (isset($_GET['delete_all'])) {
    <link rel="icon" type="image/png" href="img/tab-icon.png">
    <title>BNB - Cart</title>
 
-   <!-- font awesome cdn link  -->
+
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="assets/css/cartStyle.css">
+   <link rel="stylesheet" href="assets/css/cart.style.css">
 </head>
 <body>
 
-<?php include 'includes/header.php'; ?>
+<?php include ("app/includes/html/cart.header.php"); ?>
 
 <div class="container">
 
