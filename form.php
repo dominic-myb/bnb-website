@@ -1,7 +1,6 @@
 <?php
 session_start();
 include("app/includes/components/connection.php");
-include("app/includes/components/function.php");
 include("app/process/form.submit.php");
 ?>
 <!DOCTYPE html>
