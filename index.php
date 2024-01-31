@@ -1,75 +1,19 @@
 <?php
 session_start();
 include("app/includes/components/connection.php");
-
-$customer_id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : null;
-
-if (isset($_POST['add_to_cart'])) {
-
-    if (!$customer_id) {
-        echo "<script>
-            alert('Please log in to add items to the cart.');
-            window.location = 'login.php'; // Change 'login.php' to your login page
-            </script>";
-        exit();
-    }
-    
-    $product_id = $_POST['product_id'];
-    $product_name = $_POST['product_name'];
-    $product_price = $_POST['product_price'];
-    $product_image = $_POST['product_image'];
-    $product_quantity = 1;
-
-    // Assuming customer_id is stored in the session
-    $customer_id = $_SESSION['customer_id'];
-
-    $select_cart = mysqli_prepare($con, "SELECT * FROM `order_tbl` WHERE customer_id = ? AND name = ?");
-    mysqli_stmt_bind_param($select_cart, "is", $customer_id, $product_name);
-    mysqli_stmt_execute($select_cart);
-    mysqli_stmt_store_result($select_cart);
-
-    if (mysqli_stmt_num_rows($select_cart) > 0) {
-
-        $update_value = 1;
-        $order_query = "SELECT * FROM order_tbl WHERE customer_id = $customer_id";
-        $order_result = mysqli_query($con, $order_query);
-        
-        if (mysqli_num_rows($order_result) > 0) {
-            while ($row = mysqli_fetch_assoc($order_result)) {
-                if ($product_id == $row['product_id']) {
-                    $order_id = $row['order_id'];
-                    break;
-                }
-            }
-        }
-
-        $update_quantity_query = mysqli_prepare($con, "UPDATE order_tbl SET quantity = quantity + ? WHERE order_id = ?");
-        mysqli_stmt_bind_param($update_quantity_query, "ii", $update_value, $order_id);
-        mysqli_stmt_execute($update_quantity_query);
-        echo "<script>
-        alert('Added 1 to the cart!');
-        window.location = 'index.php';
-        </script>";
-
-    } else {
-
-        $insert_product = mysqli_prepare($con, "INSERT INTO `order_tbl` (customer_id, product_id, name, price, image, quantity) VALUES (?, ?, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($insert_product, "iissii", $customer_id, $product_id, $product_name, $product_price, $product_image, $product_quantity);
-        mysqli_stmt_execute($insert_product);
-        echo "<script>
-        alert('Added 1 to the cart!');
-        window.location = 'index.php';
-        </script>";
-    }
-}
+include("app/process/add.cart.php");
+$isAuthenticated = isset($_SESSION['username']);
+$jsUsername = $isAuthenticated ? $_SESSION['username'] : '';
+echo '<script>';
+echo "var jsUsername = '" . $jsUsername . "';";
+echo '</script>';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
-<?php 
-$title = "Café BLK & BRWN"; 
-include("app/includes/html/index.head.php"); 
+<?php
+$title = "Café BLK & BRWN";
+include("app/includes/html/index.head.php");
 ?>
 </head>
 
@@ -78,33 +22,28 @@ include("app/includes/html/index.head.php");
         <div class="logo">
             <a href="#">Café <span>BLK & BRWN</span></a>
         </div>
-
         <nav>
             <ul>
                 <li>
-                    <div class="account-drp">
+                    <div class="menu-drp">
                         <a href="#menu" class="account-btn">Menu</a>
                     </div>
                 </li>
                 <li>
-                    <div class="account-drp">
+                    <div class="shop-drp">
                         <a href="#shop" class="account-btn">Shop</a>
                     </div>
-                    </div>
                 </li>
                 <li>
-                    <div class="account-drp">
+                    <div class="contact-drp">
                         <a href="#contact" class="account-btn">Contact</a>
                     </div>
-                    </div>
                 </li>
                 <li>
-                    <div class="account-drp">
-                        <a href="#" class="account-btn">Cart</a>
-                        <div class="account-drp-content">
-                            <a href="#">Option 1</a>
-                            <a href="#">Option 2</a>
-                            <a href="#">Option 3</a>
+                    <div class="cart-drp">
+                        <a href="#" class="cart-btn" id="cartLink">Cart</a>
+                        <div class="cart-drp-content">
+                            <a href="cart.php">View Cart</a>
                         </div>
                     </div>
                 </li>
@@ -112,8 +51,6 @@ include("app/includes/html/index.head.php");
                     <div class="account-drp">
                         <a href="#" class="account-btn">Account</a>
                         <div class="account-drp-content">
-                            <a href="#">Option 1</a>
-                            <a href="#">Option 2</a>
                             <hr>
                             <a href="app/process/logout.php" style="color:red;">Logout</a>
                         </div>
@@ -137,42 +74,42 @@ include("app/includes/html/index.head.php");
         <div class="menu-content">
             <div class="hot-coffees">
                 <div class="hot-coffees-image">
-                    <img src="img/hot-coffees.jpg" alt="">
+                    <img src="assets/images/img/hot-coffees.jpg" alt="">
                 </div>
                 <div class="hot-coffees-body">
                     <h2>Hot Coffees</h2>
-                    <label>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius, repellat!</label>
+                    <label>
+                        Indulge in the rich, aromatic experience of our hot coffees. Savor the perfect blend, offering
+                        warmth and delightful flavors in every sip.</label>
                 </div>
             </div>
             <div class="cold-coffees">
                 <div class="cold-coffees-image">
-                    <img src="img/cold-coffees.jpg" alt="">
+                    <img src="assets/images/img/cold-coffees.jpg" alt="">
                 </div>
                 <div class="cold-coffees-body">
                     <h2>Cold Coffees</h2>
-                    <label>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius, repellat!</label>
+                    <label>Embrace refreshing moments with our cold coffees. Cool, smooth, and invigorating blends that
+                        provide a delightful escape from the ordinary.</label>
                 </div>
             </div>
             <div class="frappucino-coffees">
                 <div class="frappucino-coffees-image">
-                    <img src="img/frappuccino.jpg" alt="">
+                    <img src="assets/images/img/frappuccino.jpg" alt="">
                 </div>
                 <div class="frappucino-coffees-body">
                     <h2>Frappucino Coffees</h2>
-                    <label>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius, repellat!</label>
+                    <label>Experience pure bliss with our Frappuccino coffees. Indulge in creamy, blended perfection
+                        that combines rich flavors for a delightful and energizing treat.</label>
                 </div>
             </div>
         </div>
     </div>
-
-
     <div class="shop" id="shop">
-
         <div class="shop-header">
             <h3>Shop</h3>
             <h4>Black & Brown Coffee Drinks</h4>
         </div>
-
         <div class="shop-box">
             <?php
             $sql = "SELECT * FROM product_tbl";
@@ -230,7 +167,7 @@ include("app/includes/html/index.head.php");
     <div class="contact" id="contact">
         <div class="contact-box">
             <div class="contact-image">
-                <img src="img/bg-image2.jpeg">
+                <img src="assets/images/img/bg-image2.jpeg">
             </div>
         </div>
         <div class="contact-box">
@@ -270,7 +207,8 @@ include("app/includes/html/index.head.php");
             </div>
         </div>
     </div>
-
+    <script src="assets/js/vendor/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 
 </html>
