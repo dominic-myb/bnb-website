@@ -1,5 +1,5 @@
 <?php
-include("../includes/connection.php");
+include("../app/includes/components/connection.php");
 
 $product_id = $_POST['product_id'];
 $p_name = $_POST['p_name'];
@@ -9,10 +9,10 @@ $category = $_POST['category'];
 
 if (isset($_FILES['newImage'])) {
 
-    $location = "./uploads/";
+    $location = "../assets/images/uploads/";
     $img = $_FILES['newImage']['name'];
     $tmp = $_FILES['newImage']['tmp_name'];
-    $dir = '../uploads/';
+    $dir = '../assets/images/uploads/'; 
     $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION));
     $valid_extensions = array('jpeg', 'jpg', 'png', 'gif', 'webp');
     $image = rand(1000, 1000000) . "." . $ext;

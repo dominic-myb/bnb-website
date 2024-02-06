@@ -1,4 +1,5 @@
 <?php
+include("../includes/components/connection.php");
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -18,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if ($result->num_rows > 0) {
         echo "<script>
           alert('Username or Email Unavailable!')
-          window.location = 'form.php'</script>";
+          window.location = '../../form.php'</script>";
     } else {
 
         $stmt = $con->prepare("INSERT INTO customer_tbl(name,email,phone,username,password) VALUES (?, ?, ?, ?, ?)");
@@ -28,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if ($stmt->affected_rows > 0) {
             echo "<script>
             alert('Successfully Registered!')
-            window.location = 'login.php'
+            window.location = '../../login.php'
         </script>";
         } else {
             echo "<script>
             alert('Error adding user!')
-            window.location = 'form.php'
+            window.location = '../../form.php'
         </script>";
         }
 

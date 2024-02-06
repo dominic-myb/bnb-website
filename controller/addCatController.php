@@ -1,5 +1,5 @@
 <?php
-include("../includes/connection.php");
+include("../app/includes/components/connection.php");
 
 if (isset($_POST['upload'])) {
 

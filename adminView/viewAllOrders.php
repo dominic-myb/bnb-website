@@ -11,7 +11,7 @@
      </tr>
     </thead>
      <?php
-      include_once ("../includes/connection.php");
+      include_once ("../app/includes/components/connection.php");
       $sql = "SELECT * FROM order_tbl INNER JOIN customer_tbl ON order_tbl.customer_id = customer_tbl.customer_id";
       $result=$con-> query($sql);
       
@@ -20,12 +20,12 @@
     ?>
        <tr>
           <td><?=$row["order_id"]?></td>
-          <td><?=$row["customer_name"]?></td>
+          <td><?=$row["name"]?></td>
           <td><?=$row["phone"]?></td>
-          <td><?=$row["order_date"]?></td>
+          <td><?=$row["date"]?></td>
           
            <?php 
-                if($row["order_status"]==0){
+                if($row["status"]==0){
                             
             ?>
                 <td><button class="btn btn-danger" onclick="ChangeOrderStatus('<?=$row['order_id']?>')">Pending </button></td>

@@ -209,7 +209,7 @@ function eachDetailsForm(id){
 //delete category data
 function categoryDelete(id){
     $.ajax({
-        url:"./controller/catDeleteController.php",
+        url:"../controller/catDeleteController.php",
         method:"post",
         data:{record:id},
         success:function(data){

@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <?php
-      include_once ("../includes/connection.php");
+      include_once ("../app/includes/components/connection.php");
       $sql="SELECT * from product_tbl, category_tbl WHERE product_tbl.category_id=category_tbl.category_id";
       $result=$con-> query($sql);
       $count=1;

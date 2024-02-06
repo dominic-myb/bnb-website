@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <?php
-      include_once ("../includes/connection.php");
+      include_once ("../app/includes/components/connection.php");
       $sql="SELECT * from customer_tbl";
       $result=$con-> query($sql);
       $count=1;
@@ -20,7 +20,7 @@
     ?>
     <tr>
       <td><?=$count?></td>
-      <td><?=$row["cus_username"]?>
+      <td><?=$row["username"]?>
       <td><?=$row["email"]?></td>
       <td><?=$row["phone"]?></td>
     </tr>

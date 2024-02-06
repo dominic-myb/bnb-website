@@ -3,7 +3,7 @@
 
 <h4>Edit Product Detail</h4>
 <?php
-    include_once("../includes/connection.php");
+    include_once("../app/includes/components/connection.php");
 	$ID=$_POST['record'];
 	$qry=mysqli_query($con, "SELECT * FROM product_tbl WHERE product_id='$ID'");
 	$numberOfRow=mysqli_num_rows($qry);

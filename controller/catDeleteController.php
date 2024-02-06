@@ -1,5 +1,5 @@
 <?php
-include("../includes/connection.php");
+include("../app/includes/components/connection.php");
 $c_id = $_POST['record'];
 $query = "DELETE FROM category_tbl where category_id='$c_id'";
 $data = mysqli_query($con, $query);
