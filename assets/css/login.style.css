@@ -19,28 +19,31 @@ body {
   margin-bottom: 20px;
 }
 
-.container label,
-.container input[type="text"],
-.container input[type="password"] {
+.container input[class="username"],
+.container input[class="password"] {
   display: block;
   width: 100%;
   margin-bottom: 10px;
   color: #603000;
 }
+.container label{
+  width: 95%;
+  margin-bottom: 40px;
+}
 
-.container input[type="text"],
-.container input[type="password"] {
+.container input[class="username"],
+.container input[class="password"] {
   padding: 10px;
   border: 1px solid #e6c9a9;
   border-radius: 4px;
 }
-.container input[type="text"]{
+.container input[class="username"]{
   margin-top: 40px;
   margin-bottom: 15px;
 }
 
-.container input[type="password"]{
-  margin-bottom: 30px;
+.container input[class="password"]{
+  margin-bottom: 20px;
 }
 
 .container input[type="submit"] {
@@ -53,7 +56,7 @@ body {
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 .container input[type="submit"]:hover {
