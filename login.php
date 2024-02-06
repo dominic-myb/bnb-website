@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
   if (!empty($username) && !empty($password)) {
 
     $select = mysqli_prepare($con, "SELECT * FROM customer_tbl WHERE username = ? AND password = ?");
+    $admin_query = "SELECT * FROM admin WHERE admin_username=? AND admin_password = ?";
     mysqli_stmt_bind_param($select, "ss", $username, $password);
     mysqli_stmt_execute($select);
     $result = mysqli_stmt_get_result($select);
@@ -30,7 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       </script>';
       exit();
 
-    } else {
+    } else if($result = $con->query($admin_query)) {
+      echo '<script>
+      alert("Welcome, Admin!");
+      window.location.href = "admin.php";
+      </script>';
+      exit();
+    }else{
       echo '<script>
       alert("Incorrect Username or Password!");
       window.location.href = "login.php";
@@ -54,13 +61,18 @@ include("app/includes/html/login.head.php");
       <h2>Café <span>BLK & BRWN</span></h2>
     </div>
     <form action="login.php" method="post">
-      <input type="text" id="username" name="username" placeholder="Username" autocomplete="off" required>
-      <input type="password" id="password" name="password" placeholder="Password" autocomplete="off" required>
+      <input type="text" class="username"id="username" name="username" placeholder="Username" autocomplete="off" required>
+      <input type="password" class="password" id="password" name="password" placeholder="Password" autocomplete="off" required>
+      <div class="show-hide">
+        <label for="showPassword" class="form-check-label" style="display: inline-block; float:left; ">Show Password: &nbsp;&nbsp;&nbsp;</label>
+        <input type="checkbox" id="showPassword" class="form-check-input">
+      </div>
       <input type="submit" value="Login"><br>
       <hr>
       <p class="create-acc">New to Black & Brown? &nbsp<a href="form.php">Create Account</a></p>
     </form>
   </div>
+  <script src="assets/js/vendor/jquery-3.7.1.min.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
-
 </html>
