@@ -37,10 +37,10 @@ $(document).ready(function () {
     });
   }
   checkUserSession();  
-  $("#register").on("click", function () {
-    if (validateForm()) {
-      $("#register-form").submit();
-    }
+  $("#register").on("click", function (event) {
+    if (!validateForm()) {
+      event.preventDefault();
+   }
   });
 
   function validateForm() {
@@ -79,4 +79,13 @@ $(document).ready(function () {
 
     return true;
   }
+  $("#showPassword").change(function () {
+    var passwordInput = $("#password");
+    
+    if ($(this).prop("checked")) {
+        passwordInput.attr("type", "text");
+    } else {
+        passwordInput.attr("type", "password");
+    }
+});
 });
