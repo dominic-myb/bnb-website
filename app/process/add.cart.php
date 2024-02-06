@@ -42,8 +42,12 @@ if (isset($_POST['add_to_cart'])) {
             window.location = 'index.php';
         </script>";
     } else {
-        $insert_product = mysqli_prepare($con, "INSERT INTO `order_tbl` (customer_id, product_id, name, price, image, quantity) VALUES (?, ?, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($insert_product, "iissii", $customer_id, $product_id, $product_name, $product_price, $product_image, $product_quantity);
+        $timezone = new DateTimeZone('Asia/Taipei');
+        $now = new DateTime('now', $timezone);
+        date_default_timezone_set('Asia/Taipei');
+        $date = date("Y-m-d H:i:s");
+        $insert_product = mysqli_prepare($con, "INSERT INTO `order_tbl` (customer_id, product_id, name, price, image, quantity, date) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($insert_product, "iissiis", $customer_id, $product_id, $product_name, $product_price, $product_image, $product_quantity, $date);
         mysqli_stmt_execute($insert_product);
         echo "<script>
             alert('Added 1 to the cart!');
